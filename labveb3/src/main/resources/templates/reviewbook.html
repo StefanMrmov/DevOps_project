@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:method="POST" action="/books/review">
+    <select name="id">
+        <option th:each="book : ${books}" th:value="${book.getId()}" th:text="${book.getTitle()}">
+    </select>
+    <input type="text" id="score" name="score">
+    <input type="text" id="description" name="description">
+    <input type="datetime-local" id="stamp" name="stamp"/>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
