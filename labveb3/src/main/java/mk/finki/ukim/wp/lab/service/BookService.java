@@ -14,4 +14,6 @@ public interface BookService{
     Optional<Book> save(String title, String isbn, String genre, int year, Long bookStoreId);
     Book findById(Long id);
     void deleteById(Long id);
+
+    void transferInMemoryToDataBase();
 }

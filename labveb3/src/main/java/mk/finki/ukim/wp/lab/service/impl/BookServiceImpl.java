@@ -36,6 +36,7 @@ public class BookServiceImpl implements BookService {
         Book book=bookRepository.findByIsbn(isbn).orElseThrow(()->new RuntimeException("ne postoi ovoj isbn"));
         Author author=authorRepository.findById(authorId).orElseThrow(()->new RuntimeException("ne postoi avtor so ova id"));
         book.getAuthors().add(author);
+        this.bookRepository.save(book);
         return author;
     }
 
@@ -52,7 +53,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Optional<Book> save(String title, String isbn, String genre, int year, Long bookStoreId) {
       BookStore bookStore = bookStoreRepository.findById(bookStoreId).orElseThrow(()->new RuntimeException("nema bookstore so toj id"));
-       Book book=new Book(title, isbn, genre, year, new ArrayList<>(), bookStore);
+       Book book=new Book(isbn, title, genre, year, new ArrayList<>(), bookStore);
         return Optional.of(bookRepository.save(book));
     }
 
@@ -64,5 +65,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteById(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public void transferInMemoryToDataBase() {
+
     }
 }

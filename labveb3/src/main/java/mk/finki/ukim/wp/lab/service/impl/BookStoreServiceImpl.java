@@ -1,5 +1,7 @@
 package mk.finki.ukim.wp.lab.service.impl;
 
+import jakarta.transaction.Transactional;
+import mk.finki.ukim.wp.lab.bootstrap.DataHolder;
 import mk.finki.ukim.wp.lab.model.BookStore;
 //import mk.finki.ukim.wp.lab.repository.impl.InMemoryBookStoreRepository;
 import mk.finki.ukim.wp.lab.repository.jpa.BookStoreRepository;
@@ -24,5 +26,15 @@ public class BookStoreServiceImpl implements BookStoreService {
     @Override
     public BookStore findById(Long id) {
         return bookStoreRepository.findById(id).orElseThrow(()-> new RuntimeException("nema bookstore so toj id"));
+    }
+
+    @Override
+    @Transactional
+    public void transferInMemoryToDataBase() {
+        List<BookStore> inMemoryBookStores = DataHolder.bookStores;
+        inMemoryBookStores.forEach(inMemoryBookStore -> {
+            BookStore bookStore = new BookStore(inMemoryBookStore.getName(), inMemoryBookStore.getCity(), inMemoryBookStore.getAddress());
+            bookStoreRepository.save(bookStore);
+        });
     }
 }

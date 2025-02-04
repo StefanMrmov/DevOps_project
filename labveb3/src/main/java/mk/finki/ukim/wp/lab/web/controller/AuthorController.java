@@ -30,8 +30,7 @@ public class AuthorController {
     public String authorGet(@RequestParam(value = "isbn", required = false) String isbn, Model model) {
         model.addAttribute("authors", authorService.listAuthors());
         model.addAttribute("isbn", isbn);
-
-        return "authorsList";
+            return "authorsList";
     }
 
     @PostMapping

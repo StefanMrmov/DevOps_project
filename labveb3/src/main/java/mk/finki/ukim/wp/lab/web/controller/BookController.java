@@ -65,12 +65,13 @@ public class BookController {
         if (bookId == -1) {
             return String.format("redirect:/books/add?title=%s&isbn=%s&genre=%s&year=%d&bookStore=%s", title, isbn, genre, year, bookStore);
         }
-        Book book = bookService.findById(bookId);
-        book.setTitle(title);
-        book.setIsbn(isbn);
-        book.setGenre(genre);
-        book.setYear(year);
-        book.setBookStore(bookStoreService.findById(bookStore));
+        bookService.deleteById(bookId);
+//        Book book = bookService.findById(bookId);
+//        book.setTitle(title);
+//        book.setIsbn(isbn);
+//        book.setGenre(genre);
+//        book.setYear(year);
+        this.bookService.save(title, isbn, genre, year, bookStore);
 
         return "redirect:/books";
     }

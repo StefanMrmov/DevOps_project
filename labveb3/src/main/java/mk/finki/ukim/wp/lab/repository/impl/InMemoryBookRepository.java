@@ -32,7 +32,7 @@ public class InMemoryBookRepository {
 
     public Optional<Book> save(String title, String isbn, String genre, int year, BookStore bookStore) {
         DataHolder.books.removeIf(book -> book.getIsbn().equals(isbn));
-        Book book = new Book(isbn, title, genre, year, new ArrayList<>(), bookStore);
+        Book book = new Book(title, isbn, genre, year, new ArrayList<>(), bookStore);
         DataHolder.books.add(book);
 
         return Optional.of(book);
