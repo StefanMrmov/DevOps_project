@@ -2,8 +2,8 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-COPY pom.xml .
-COPY src ./src
+COPY labveb3/pom.xml .
+COPY labveb3/src ./src
 
 RUN apt-get update && apt-get install -y maven \
     && mvn clean package -DskipTests
