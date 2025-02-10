@@ -1,13 +1,13 @@
-name: Build and Push Docker Image
+name: Build, Push, and Deploy
 
 on:
   push:
     branches:
-      - master # Trigger the workflow on pushes to the main branch
+      - master
 
 jobs:
-  build-and-push:
-    name: Build and Push Docker Image to Docker Hub
+  build-push-deploy-k8s:
+    name: Build, Push, and Deploy on Local Kubernetes
     runs-on: ubuntu-latest
 
     steps:
@@ -22,11 +22,22 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      # Step 3: Build and push the Docker image
+      # Step 3: Build and push Docker image
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./labveb3/Dockerfile  # Relative path to your Dockerfile
-          push: true          # Push the image to Docker Hub
-          tags: stefanmrmov/devops_project:latest  # Replace with your Docker Hub repo and tag
+          file: ./labveb3/Dockerfile  # Path to your Dockerfile.
+          push: true                  # Push image to Docker Hub.
+          tags: stefanmrmov/devops_project:latest
+
+      # Step 4: Deploy application on local Kubernetes cluster
+      - name: Set up kubectl for local deployment
+        run: |
+          echo "Setting up kubectl..."
+          mkdir -p ~/.kube/
+          echo "${{ secrets.KUBECONFIG_CONTENT }}" > ~/.kube/config
+
+      - name: Deploy Application to Local Kubernetes Cluster
+        run: |
+          kubectl apply -f k8s/
