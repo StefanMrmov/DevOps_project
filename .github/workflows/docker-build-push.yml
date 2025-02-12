@@ -3,12 +3,13 @@ name: Build, Push, and Deploy
 on:
   push:
     branches:
-      - master
+      - master  # Trigger the workflow on pushes to the master branch
+  workflow_dispatch:  # Allow manual triggering of the workflow
 
 jobs:
   build-push-deploy-k8s:
     name: Build, Push, and Deploy on Local Kubernetes
-    runs-on: ubuntu-latest
+    runs-on: self-hosted  # Use the self-hosted runner
 
     steps:
       # Step 1: Check out the code
@@ -32,12 +33,6 @@ jobs:
           tags: stefanmrmov/devops_project:latest
 
       # Step 4: Deploy application on local Kubernetes cluster
-      - name: Set up kubectl for local deployment
-        run: |
-          echo "Setting up kubectl..."
-          mkdir -p ~/.kube/
-          echo "${{ secrets.KUBECONFIG_CONTENT }}" > ~/.kube/config
-
       - name: Deploy Application to Local Kubernetes Cluster
         run: |
-          kubectl apply -f k8s/ --validate=false
+          kubectl apply -f k8s/
